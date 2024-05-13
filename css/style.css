@@ -7,6 +7,10 @@
     font: 1.2rem;
 }
 
+body {
+    background-color: rgba(20, 20, 20, 0.9);
+}
+
 header {
     background: url(../images/banner.jpg);
     background-repeat: no-repeat;
@@ -36,15 +40,46 @@ h1 {
 
 
 table {
-    border: 1px solid black;
+    border: none;
     font-size: 1.1rem;
     border-collapse: collapse;
+    
 }
 
-th , tr, td{
+table tr th:first-child {
+    border-top-left-radius: 5px;
+   
+}
+
+table tr th:last-child {
+    border-top-right-radius: 15px;
+    
+}
+
+tr, td{
     border: 1px solid black;
     padding: 5px 10px;
+    
 }
+
+tr:nth-last-of-type(even) td{
+    background-color: #ddd;
+}
+
+td{
+    background-color: #eee;
+}
+
+th {
+    color: #202020;
+    background-color: lightblue;
+    padding: 30px 10px;
+    border: 1px solid black;
+    white-space: nowrap;
+    
+   
+}
+
 
 .tableImg {
     width: 300px;

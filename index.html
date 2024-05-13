@@ -19,9 +19,12 @@
     <main>
 
         <div id="wrapper">
-            <div id="optionButtons">
-                <button type="button">Add New</button>
-                <button type="button">Sorting</button>
+            <div id="actionDivs">
+                <div id="searchBox">
+                    <h3>Know what your looking for?</h3>
+                    <label for="textBox">Enter a search term:</label>
+                    <input type="text" name="textBox" placeholder="...temple bar" onchange="searchData(this.value)">
+                </div>
             </div>
 
             <div id="mainContent">
