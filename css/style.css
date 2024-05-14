@@ -89,3 +89,57 @@ th {
     width: 90%;
     margin: auto;
 }
+
+#actionDivs {
+    width: 90%;
+    margin: 20px auto;
+    display: flex;
+    justify-content: space-around;
+}
+
+#searchBox {
+    padding: 40px 40px;
+    background-color: lightblue;
+    border-radius: 5px;
+    min-height: 200px;
+    height: fit-content;
+}
+
+#searchBox h3, #filterBox h3{
+    font-size: 1.6rem;
+    color: #141414;
+    margin-bottom: 20px;
+}
+
+#searchBox label {
+    font-size: 1.2rem;
+    margin-right: 10px;
+}
+
+#searchBox input {
+    font-size: 1.1em;
+}
+
+
+#filterBox {
+    width: max-content;
+    padding: 30px 30px;
+    background-color: lightblue;
+    border-radius: 5px;
+    min-height: 200px;
+    height: fit-content;
+}
+
+#tagsList {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, 150px);
+    grid-template-rows: auto;
+}
+
+#tagsList li label {
+    display: inline-block;
+    min-width: 70px;
+    margin: 4px 7px 4px 0;
+    font-size: 1.2rem;
+}

@@ -23,7 +23,16 @@
                 <div id="searchBox">
                     <h3>Know what your looking for?</h3>
                     <label for="textBox">Enter a search term:</label>
-                    <input type="text" name="textBox" placeholder="...temple bar" onchange="searchData(this.value)">
+                    <input type="text" name="textBox" placeholder="e.g. Temple bar" oninput="searchData(this.value)">
+                </div>
+
+                <div id="filterBox">
+                    <h3>Search against tags</h3>
+                    <div id="tagsBox">
+                        <ul id="tagsList">
+                            
+                        </ul>
+                    </div>
                 </div>
             </div>
 
