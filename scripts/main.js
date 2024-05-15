@@ -9,6 +9,8 @@ let tagsList = new Set([])
 let selectedTags
 
 
+let mode = "guest"
+
 
 window.onload = () => {
     fetch(URL)
@@ -147,10 +149,53 @@ function updateFilters(){
         }
     })
     console.log(selectedTags)
-    displayTable(data)
+    displayTable(data)  
+}
 
+function displayProfileModal(){
+    let modalHtml = `
+        <div class="modalAlpha">
+        <div id="profileModal">
+            <div class="modalExitButton" onclick="exitModal()">X</div>`
+
+    if (mode==="guest"){
+        modalHtml += `
+                <h1>Log In As Admin</h1>
+                <div id="loginForm">
+                    <label for="username">Admin username</label>
+                    <input type="text" name="username">
+
+                    <label for="password">Admin password</label>
+                    <input type="password" name="password">
+
+                    <button type="button" class="loginButton" onclick="validateLogin()">Log In</button>
+                </div>
+        `
+    }
     
+
+    else {
+        //add log out part here
+    }
+
+
+
+    modalHtml += `</div>
+                </div>`
+
+    let modalElement = document.createElement("div")
+    modalElement.setAttribute("class", "modalContainer")
+    modalElement.innerHTML = modalHtml
+    //clear table first
+    document.getElementById("mainContent").innerHTML = ""
+    document.getElementsByTagName("body")[0].appendChild(modalElement)
     
+}
+
+function exitModal(){
+    let modalElement = document.getElementsByClassName("modalContainer")[0]
+    modalElement.remove()
+    displayTable(data)
 }
 
 
@@ -166,7 +211,7 @@ basic table
 
 sort / search
 
----- create admin mode
+---- create function validate log in, allow user to log in, then log out
 
 
 add basic admin screen
