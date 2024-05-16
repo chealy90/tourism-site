@@ -258,13 +258,69 @@ function logout(){
 
 
 function expandRow(rowId){
-    let row = data.filter(row => row.id = rowId)
+    let row = data.filter(row => row.id == rowId)[0]
+    console.log(row)
+    console.log(row.name)
     let modalHtml = `
         <div class="modalAlpha">
-            <div class="exitModalButton" onclick="exitModal()">X</div>
+        <div id="infoDisplayDiv">
+            <div id="infoModalTopRow">
+                <div class="modalExitButton" onclick="exitModal()">X</div>
+                <h1>${row.name}</h1>
+                <h2>Rating: ${row.rating}</h2>
+            </div>
+
+            <div id="infoModalRowTwo">  
+                <div>${row.description}</div>
+
+                <div id="addressDiv">
+                    <div>${row.address}</div>
+                    <div id="coordsDiv">
+                        <div>
+                            <h4>Latitude</h4>
+                            <p>${row.latitude}</p>
+                        </div>
+                        <div>
+                            <h4>Longitude</h4>
+                            <p>${row.longitude}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>`
+
+
+
+            modalHtml += `
+            <div id="infoModalRowThree">
+                <ul>`
+
             
+            
+            if (row.tags.length!==0){
+                row.tags.forEach(tag => {
+                    modalHtml += `<li>${tag}</li>`
+                })
+            }
+
+
+            modalHtml += `</ul>
+                            </div>
+
+            <div id="infoModalGalleryRow">
+                
+            </div>
+
         </div>
-    `
+        </div>`
+
+
+    let modalElement = document.createElement("div")
+    modalElement.setAttribute("class", "modalContainer")
+    modalElement.innerHTML = modalHtml
+    //clear table first
+    document.getElementById("mainContent").innerHTML = ""
+    document.getElementsByTagName("body")[0].appendChild(modalElement)
+    
 }
 
 
