@@ -1,5 +1,9 @@
-const URL = "landmarks.json"
+const URL = "json/landmarks.json"
+const usersURL = "json/users.json"
 let data
+let users = []
+
+
 let keys
 let sortOrder = 1
 let currentSortField = null
@@ -8,11 +12,22 @@ let sortables = ["id", "name", "rating"]
 let tagsList = new Set([])
 let selectedTags
 
+let currentUser
+
 
 let mode = "guest"
 
 
 window.onload = () => {
+    //users
+    fetch(usersURL)
+    .then(rawData => rawData.json())
+    .then(userData => {
+        users = userData       
+    })
+
+
+
     fetch(URL)
     .then(rawData => rawData.json())
     .then(jsonData => {
@@ -156,27 +171,33 @@ function displayProfileModal(){
     let modalHtml = `
         <div class="modalAlpha">
         <div id="profileModal">
-            <div class="modalExitButton" onclick="exitModal()">X</div>`
+            <div class="modalExitButton" onclick="exitModal()">X</div>
+            <h1>Log In As Admin</h1>`
 
+
+    //display login
     if (mode==="guest"){
-        modalHtml += `
-                <h1>Log In As Admin</h1>
+        modalHtml += `           
                 <div id="loginForm">
                     <label for="username">Admin username</label>
-                    <input type="text" name="username">
+                    <input type="text" name="username" id="usernameInput" required>
 
                     <label for="password">Admin password</label>
-                    <input type="password" name="password">
+                    <input type="password" name="password" id="passwordInput" required>
 
                     <button type="button" class="loginButton" onclick="validateLogin()">Log In</button>
                 </div>
         `
+    } 
+    //display logout
+    else {
+        modalHtml += `
+        <div id="loginForm">
+            <h3>Admin User: ${currentUser}</h3>
+            <button type="button" class="loginButton" onclick="logout()">Log Out</button> 
+        </div>`
     }
     
-
-    else {
-        //add log out part here
-    }
 
 
 
@@ -196,6 +217,45 @@ function exitModal(){
     let modalElement = document.getElementsByClassName("modalContainer")[0]
     modalElement.remove()
     displayTable(data)
+}
+
+function validateLogin(){
+    let usernameInput = document.getElementById("usernameInput").value
+    let passwordInput = document.getElementById("passwordInput").value
+    
+    if (usernameInput in users == false){
+        alert("Invalid Login. Please enter a valid username and password.")
+        return
+    } 
+
+    if (users[usernameInput] !== passwordInput){
+        alert("Invalid Login. Please enter a valid username and password.")
+        return
+    }
+
+    mode = "admin"
+    currentUser = usernameInput
+    //replace UI
+    document.getElementById("loginForm").innerHTML = 
+        `<h3>Admin User: ${usernameInput}</h3>
+        <button type="button" class="loginButton" onclick="logout()">Log Out</button>`   
+}
+
+function logout(){
+    usernameInput = ""
+    passwordInput = ""
+    mode = "guest"
+
+    document.getElementById("loginForm").innerHTML = `
+        <label for="username">Admin username</label>
+        <input type="text" name="username" id="usernameInput" required>
+
+        <label for="password">Admin password</label>
+        <input type="password" name="password" id="passwordInput" required>
+
+        <button type="button" class="loginButton" onclick="validateLogin()">Log In</button>
+        `
+
 }
 
 
