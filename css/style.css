@@ -54,17 +54,18 @@ h1 {
 
 table {
     border: none;
+    border-radius: 5px;
     font-size: 1.1rem;
     border-collapse: collapse;
     
 }
 
-table tr th:first-child {
+table tr th:first-child, table tr:first-child {
     border-top-left-radius: 5px;
    
 }
 
-table tr th:last-child {
+table tr th:last-child, table tr:last-child {
     border-top-right-radius: 15px;
     
 }
@@ -75,12 +76,23 @@ tr, td{
     
 }
 
+tr td:last-child {
+    text-align: center;
+}
+
 tr:nth-last-of-type(even) td{
     background-color: #ddd;
 }
 
 td{
     background-color: #eee;
+    font-size: 1.2rem;
+    line-height: 1.7rem;
+}
+
+
+td ul {
+    margin-left: 15px;
 }
 
 th {
@@ -89,6 +101,7 @@ th {
     padding: 30px 10px;
     border: 1px solid black;
     white-space: nowrap;
+    min-width: 175px;
     
    
 }

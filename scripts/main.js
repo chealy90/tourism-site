@@ -5,15 +5,16 @@ let users = []
 
 
 let keys
+let mainHeaders = ["Name", "Address", "Description", "Photo", "Tags", "Rating"]
+let mainKeys = mainHeaders.map(field => field.toLowerCase())
 let sortOrder = 1
 let currentSortField = null
 
-let sortables = ["id", "name", "rating"]
+let sortables = ["Name", "Rating"]
 let tagsList = new Set([])
 let selectedTags
 
 let currentUser
-
 
 let mode = "guest"
 
@@ -85,20 +86,19 @@ function displayTable(displayData){
 
 
     //headers
-    let htmlString = `<table><tr>`  
-    keys.forEach(key => {
-        htmlString += `<th onclick='${sortables.includes(key)?"sort(this.id)":"null"}'  id=${key}>${capitaliseFirstLetter(key)}${key===currentSortField? (sortOrder===1?'▲':'▼'):""}</th>`
-        
+    let htmlString = `<table><tr>`
+    mainHeaders.forEach(header => {
+        htmlString += `<th onclick='${sortables.includes(header)?"sort(this.id)":"null"}'  id=${header.toLowerCase()}>${header}${header.toLowerCase()===currentSortField? (sortOrder===1?'▲':'▼'):""}</th>`
+
     })
-    htmlString += `</tr>`
 
 
     //table rows
     displayData.forEach(row => {
-        htmlString += `<tr>`
-        keys.forEach(key=> {
-            if (key==="photosURLs"){
-                htmlString += `<td><img class="tableImg" src=${row[key][0]}></td>`
+        htmlString += `<tr onclick="expandRow('${row.id}')">`
+        mainKeys.forEach(key=> {
+            if (key==="photo"){
+                htmlString += `<td><img class="tableImg" src=${row["photosURLs"][0]}></td>`
             }
             else if (key==="tags"){
                 htmlString += "<td><ul class='tagsList'>"
@@ -116,12 +116,10 @@ function displayTable(displayData){
         })
         htmlString += `</tr>`
     })
-    
 
-
-        
-htmlString += `</table>`
-document.getElementById("mainContent").innerHTML = htmlString
+         
+    htmlString += `</table>`
+    document.getElementById("mainContent").innerHTML = htmlString
 }
 
 
@@ -259,6 +257,16 @@ function logout(){
 }
 
 
+function expandRow(rowId){
+    let row = data.filter(row => row.id = rowId)
+    let modalHtml = `
+        <div class="modalAlpha">
+            <div class="exitModalButton" onclick="exitModal()">X</div>
+            
+        </div>
+    `
+}
+
 
 
 /*
@@ -271,7 +279,8 @@ basic table
 
 sort / search
 
----- create function validate log in, allow user to log in, then log out
+---- add complex view screen in expand row
+
 
 
 add basic admin screen
