@@ -46,11 +46,11 @@ window.onload = () => {
         let olElement = document.getElementById("tagsList")
         tagsList.forEach(tag => {
             let newLI = document.createElement("li")
-            newLI.innerHTML = `<label>${tag}</label><input class="filterCB" type="checkbox" checked  value="${tag}" onchange="updateFilters()">`
+            newLI.innerHTML = `<label>${tag}</label><input class="filterCB" type="checkbox"  value="${tag}" onchange="updateFilters()">`
             olElement.appendChild(newLI)
         })
         let newLI = document.createElement("li")
-        newLI.innerHTML = `<label>other</label><input class="filterCB" type="checkbox" checked  value="other" onchange="updateFilters()">`
+        newLI.innerHTML = `<label>other</label><input class="filterCB" type="checkbox"  value="other" onchange="updateFilters()">`
         olElement.appendChild(newLI)
 
         //initial display
@@ -259,8 +259,7 @@ function logout(){
 
 function expandRow(rowId){
     let row = data.filter(row => row.id == rowId)[0]
-    console.log(row)
-    console.log(row.name)
+    let mapsURL = `https://google.ie/maps/@${row.latitude},${row.longitude},20z?entry=ttu`
     let modalHtml = `
         <div class="modalAlpha">
         <div id="infoDisplayDiv">
@@ -275,6 +274,7 @@ function expandRow(rowId){
 
                 <div id="addressDiv">
                     <div>${row.address}</div>
+
                     <div id="coordsDiv">
                         <div>
                             <h4>Latitude</h4>
@@ -284,7 +284,15 @@ function expandRow(rowId){
                             <h4>Longitude</h4>
                             <p>${row.longitude}</p>
                         </div>
+                        <a href="${mapsURL}" target="_blank">
+                            <img src="images/google-maps.png"> 
+                        </a>
                     </div>
+
+                    <div>
+                        <p>Contact: ${typeof row.phoneNumber === "undefined"?"-":row.phoneNumber}</p>
+                    </div>
+
                 </div>
             </div>`
 
@@ -292,6 +300,7 @@ function expandRow(rowId){
 
             modalHtml += `
             <div id="infoModalRowThree">
+                <p>Tags:</p>
                 <ul>`
 
             
