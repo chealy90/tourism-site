@@ -7,6 +7,10 @@
     font: 1.2rem;
 }
 
+:root {
+    --galleryWidth: 700px;
+}
+
 body {
     background-color: rgba(20, 20, 20, 0.9);
 }
@@ -258,12 +262,16 @@ th {
 
 /* INFO DISPLAY */
 #infoDisplayDiv {
+    padding-top: 40px;
     width: 60%;
     background-color: white;
-    height: 80vh;
+    height: auto;
     margin-inline: auto;
     margin-top: 20px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 
@@ -271,15 +279,17 @@ th {
 
 #infoModalTopRow {
     width: 100%;
-    height: 20%;
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-around;
+    margin-block: 12px;
 }
 
 #infoModalTopRow h1 {
     color: #141414;
+    margin-bottom: 25px;
 }
 
 #infoModalRowTwo {
@@ -340,5 +350,42 @@ th {
 
 #infoModalRowThree ul li {
     margin-inline: 20px;
+}
+
+#infoModalGalleryRow {
+    margin-bottom: 20px;
+}
+
+#slideshowContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    position: relative;
+
+}
+
+#imagesContainer {
+    width: 600px;
+    overflow: hidden;
+    display: flex;
+    margin: auto;
+}
+
+#slideshowContainer #imagesContainer img {
+    display: inline;
+    min-width: 600px;
+    border: 1px solid black;
+}
+
+#leftArrow {
+    position: absolute;
+    top: 45%;
+    left: 15%;
+}
+
+#rightArrow {
+    position: absolute;
+    top: 45%;
+    right: 15%;
 }
 

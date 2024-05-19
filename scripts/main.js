@@ -16,6 +16,10 @@ let selectedTags
 
 let currentUser
 
+let imgIndex
+let numImages
+let images
+
 let mode = "guest"
 
 
@@ -273,7 +277,7 @@ function expandRow(rowId){
                 <div>${row.description}</div>
 
                 <div id="addressDiv">
-                    <div>${row.address}</div>
+                    <div><b>${row.address}</b></div>
 
                     <div id="coordsDiv">
                         <div>
@@ -290,37 +294,50 @@ function expandRow(rowId){
                     </div>
 
                     <div>
-                        <p>Contact: ${typeof row.phoneNumber === "undefined"?"-":row.phoneNumber}</p>
+                        <p>Contact: ${row.phoneNumber === "" ? "-" :row.phoneNumber}</p>
                     </div>
 
                 </div>
             </div>`
 
 
-
+            //tags ----------
             modalHtml += `
             <div id="infoModalRowThree">
                 <p>Tags:</p>
-                <ul>`
-
-            
-            
+                <ul>`          
             if (row.tags.length!==0){
                 row.tags.forEach(tag => {
                     modalHtml += `<li>${tag}</li>`
                 })
             }
 
+            numImages = row.photosURLs.length
+            imgIndex = 0
+            images = row.photosURLs.map(imgData => {
+                let img = new Image()
+                img.width = 600
+                img.src = imgData
+                img.classList.add("galleryImg")
+                return img
+            })
+            
+
 
             modalHtml += `</ul>
                             </div>
 
             <div id="infoModalGalleryRow">
-                
+                <div id="slideshowContainer">
+                    <div id="leftArrow"><img src="images/left-arrow.png" onclick="leftClickGallery()"></div>
+                    <div id="imagesContainer"></div>
+                    <div id="rightArrow" onclick="rightClickGallery()"><img src="images/right-arrow.png"></div>
+                </div>             
             </div>
-
         </div>
         </div>`
+
+    
 
 
     let modalElement = document.createElement("div")
@@ -328,10 +345,29 @@ function expandRow(rowId){
     modalElement.innerHTML = modalHtml
     //clear table first
     document.getElementById("mainContent").innerHTML = ""
-    document.getElementsByTagName("body")[0].appendChild(modalElement)
-    
+    document.getElementsByTagName("body")[0].appendChild(modalElement)  
+
+    //add gallery images
+    let container = document.getElementById("imagesContainer")
+    for (let i=0;i<images.length;i++){
+        images[i].id = `img${i}`
+        container.appendChild(images[i])
+    } 
 }
 
+function leftClickGallery(){
+    imgIndex--
+    imgIndex = (imgIndex<0?numImages-1:imgIndex)
+    for (let i=0;i>numImages;i++){
+        images[i].style.left = 700 * -1 * imgIndex
+    }
+}
+
+function rightClickGallery(){
+    imgIndex++
+    imgIndex = imgIndex % numImages
+    console.log(imgIndex)   
+}
 
 
 /*
