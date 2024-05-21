@@ -20,7 +20,7 @@ let imgIndex
 let numImages
 let images
 
-let mode = "guest"
+let mode = "admin"
 
 
 window.onload = () => {
@@ -316,7 +316,7 @@ function expandRow(rowId){
             imgIndex = 0
             images = row.photosURLs.map(imgData => {
                 let img = new Image()
-                img.width = 600
+                img.width = 700
                 img.src = imgData
                 img.classList.add("galleryImg")
                 return img
@@ -329,10 +329,13 @@ function expandRow(rowId){
 
             <div id="infoModalGalleryRow">
                 <div id="slideshowContainer">
-                    <div id="leftArrow"><img src="images/left-arrow.png" onclick="leftClickGallery()"></div>
-                    <div id="imagesContainer"></div>
-                    <div id="rightArrow" onclick="rightClickGallery()"><img src="images/right-arrow.png"></div>
-                </div>             
+                    <div id="imagesContainer">
+                        <div id="images"></div>
+                    </div>
+                </div> 
+                <div id="dots">
+                
+                </div>            
             </div>
         </div>
         </div>`
@@ -349,25 +352,66 @@ function expandRow(rowId){
 
     //add gallery images
     let container = document.getElementById("imagesContainer")
+    let imagesContainer = document.getElementById("images")
+    let dotsContainer = document.getElementById("dots")
     for (let i=0;i<images.length;i++){
-        images[i].id = `img${i}`
-        container.appendChild(images[i])
-    } 
-}
+        let input = document.createElement("input")
+        input.name = `img${i}`
+        input.type = "radio"
+        input.id = `img${i}`
+        container.appendChild(input)
+        images[i].id = `m${i}`
+        imagesContainer.appendChild(images[i])
+        let newDot = document.createElement("label")
+        newDot.setAttribute("for", `img${i}`)
+        newDot.classList.add("galleryDotButton")
+        newDot.onclick = () => {
+            //console.log(document.getElementById("imagesContainer").children)
+        }
+        dotsContainer.appendChild(newDot)
 
-function leftClickGallery(){
-    imgIndex--
-    imgIndex = (imgIndex<0?numImages-1:imgIndex)
-    for (let i=0;i>numImages;i++){
-        images[i].style.left = 700 * -1 * imgIndex
     }
+    //add admin controls
+    if (mode==="admin"){
+        let adminRow = document.createElement("div")
+        adminRow.id = "infoModalAdminRow"
+        adminRow.innerHTML = `
+            <div id="rowEdit" class="adminAction" onclick="displayEditModal(${row.id}, '${row.name}')">Edit Entry</div>
+            <div id="rowDelete" class="adminAction" onclick="displayDeleteModal()">Delete Entry</div>`
+        document.getElementById("infoDisplayDiv").appendChild(adminRow)
+        console.log("here")
+
+
+    } 
+    
 }
 
-function rightClickGallery(){
-    imgIndex++
-    imgIndex = imgIndex % numImages
-    console.log(imgIndex)   
+function displayDeleteModal(id, name){
+    document.getElementsByClassName("modalContainer")[0].remove()
+
+    let modal = document.createElement("div")
+    modal.classList.add("modalContainer")
+    
+    modal.innerHTML += `<div class="modalAlpha">
+                            <div id="deleteModal">
+                                <div><h2>Are you sure you want to delete ${name}? This cannot be undone.</h2></div>
+                                <div>
+                                    <div>Cancel</div>
+                                    <div>Delete</div>
+                                </div>
+                            </div>
+                        </div>`
+
+
+    document.body.appendChild(modal)
+
 }
+
+
+function setMode(newMode){
+    mode = newMode
+}
+
 
 
 /*
@@ -380,7 +424,7 @@ basic table
 
 sort / search
 
----- add complex view screen in expand row
+---- add complex view screen in expand row -- add dots
 
 
 

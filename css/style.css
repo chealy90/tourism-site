@@ -354,38 +354,121 @@ th {
 
 #infoModalGalleryRow {
     margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
-#slideshowContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    position: relative;
-
+#slideshowContainer {   
+    width: 700px;
 }
 
 #imagesContainer {
-    width: 600px;
-    overflow: hidden;
+    width: 700px;
+}
+
+#imagesContainer input {
+    display: none;
+}
+
+#images {
+    width: 700px;
+    overflow: hidden;  
+    
+
+}
+
+#images img {
+    min-width: 700px;
+    display: inline-block;
+}
+
+#dots {
     display: flex;
+    justify-content: space-around;
+}
+
+
+.galleryDotButton {
+    display: block;
+    width: 30px;
+    height: 30px;
+    background-color: #141414;
+    border: 3px solid lightblue;
+    border-radius: 50%;
+    margin: 20px 12px;
+}
+
+#img0:checked ~ div > #images > #m0 {
+    margin-left: 0;
+}
+
+#img1:checked ~ div > #images > #m1 {
+    margin-left: -700px;
+}
+
+#img2:checked ~ div > #images > #m2 {
+    margin-left: -1400px
+}
+
+#img3:checked ~ div > #images > #m3 {
+    margin-left: -2100px;
+}
+
+
+
+/* admin row */
+#infoModalAdminRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-bottom: 25px;
+}
+
+.adminAction{
+    width: 30%;
+    height: 100px;
+    color: #eee;
+    font-size: 2.25rem;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.1s;
+}
+
+.adminAction:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
+#rowEdit {
+    background-color: lightskyblue;
+}
+
+#rowDelete {
+    background-color: red;
+}
+
+/* delete modal */
+#deleteModal {
+    position: absolute;
+    z-index: 100;
+    width: 33%;
+    height: 500px;
+    background-color: lightblue;
     margin: auto;
+    left: 33%;
+    top: 100px;
+
 }
 
-#slideshowContainer #imagesContainer img {
-    display: inline;
-    min-width: 600px;
-    border: 1px solid black;
-}
 
-#leftArrow {
-    position: absolute;
-    top: 45%;
-    left: 15%;
-}
 
-#rightArrow {
-    position: absolute;
-    top: 45%;
-    right: 15%;
-}
+
+
+
+
+
 
