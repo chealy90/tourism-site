@@ -377,7 +377,7 @@ function expandRow(rowId){
         adminRow.id = "infoModalAdminRow"
         adminRow.innerHTML = `
             <div id="rowEdit" class="adminAction" onclick="displayEditModal(${row.id}, '${row.name}')">Edit Entry</div>
-            <div id="rowDelete" class="adminAction" onclick="displayDeleteModal()">Delete Entry</div>`
+            <div id="rowDelete" class="adminAction" onclick="displayDeleteModal(${row.id}, '${row.name}')">Delete Entry</div>`
         document.getElementById("infoDisplayDiv").appendChild(adminRow)
         console.log("here")
 
@@ -395,16 +395,33 @@ function displayDeleteModal(id, name){
     modal.innerHTML += `<div class="modalAlpha">
                             <div id="deleteModal">
                                 <div><h2>Are you sure you want to delete ${name}? This cannot be undone.</h2></div>
-                                <div>
-                                    <div>Cancel</div>
-                                    <div>Delete</div>
+                                <div id="deleteActions">
+                                    <div class="adminAction" id="deleteCancel" onclick="cancelDelete(${id})">Cancel</div>
+                                    <div class="adminAction" id="deleteConfirm" onclick="deleteRow(${id})">Delete</div>
                                 </div>
                             </div>
                         </div>`
 
 
     document.body.appendChild(modal)
+}
 
+function cancelDelete(id){
+    document.getElementsByClassName("modalContainer")[0].remove()
+    expandRow(id)
+}
+
+function deleteRow(id){
+    let index 
+    for (let i=0;i<data.length;i++){
+        if (data[i].id === id){
+            index = i
+            break
+        }
+    }
+    data.splice(index, 1)
+    document.getElementsByClassName("modalContainer")[0].remove()
+    displayTable(data)
 }
 
 
@@ -424,7 +441,7 @@ basic table
 
 sort / search
 
----- add complex view screen in expand row -- add dots
+---- fix gallery, add editing and adding
 
 
 

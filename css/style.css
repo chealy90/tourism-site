@@ -438,31 +438,55 @@ th {
     transition: 0.1s;
 }
 
-.adminAction:hover {
+.adminAction:hover, .deleteAction:hover {
     cursor: pointer;
     transform: scale(1.05);
 }
 
-#rowEdit {
+#rowEdit, #deleteCancel {
     background-color: lightskyblue;
 }
 
-#rowDelete {
+#rowDelete, #deleteConfirm {
     background-color: red;
 }
 
 /* delete modal */
+#deleteActions {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+
 #deleteModal {
     position: absolute;
     z-index: 100;
     width: 33%;
     height: 500px;
-    background-color: lightblue;
+    background-color: white;
     margin: auto;
     left: 33%;
     top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+    padding-inline: 20px;
+}
+
+#deleteModal div h2 {
+    margin-inline: auto;
+    font-size: 1.8rem;
+    line-height: 2.5rem;
 
 }
+
+
+
+
 
 
 
