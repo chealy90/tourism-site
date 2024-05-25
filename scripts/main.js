@@ -376,7 +376,7 @@ function expandRow(rowId){
         let adminRow = document.createElement("div")
         adminRow.id = "infoModalAdminRow"
         adminRow.innerHTML = `
-            <div id="rowEdit" class="adminAction" onclick="displayEditModal(${row.id}, '${row.name}')">Edit Entry</div>
+            <div id="rowEdit" class="adminAction" onclick="displayEditModal(${row.id})">Edit Entry</div>
             <div id="rowDelete" class="adminAction" onclick="displayDeleteModal(${row.id}, '${row.name}')">Delete Entry</div>`
         document.getElementById("infoDisplayDiv").appendChild(adminRow)
         console.log("here")
@@ -424,6 +424,89 @@ function deleteRow(id){
     displayTable(data)
 }
 
+function displayEditModal(rowId){
+    let row = data.filter(row => row.id === rowId)[0]
+    
+
+
+
+
+
+    let modal = document.createElement("div")
+    modal.classList.add("modalContainer")
+    modal.id = "editContainer"
+    modal.innerHTML = `
+        <div class="modalAlpha">
+            <div id="editBox">
+                <div class="modalExitButton" onclick="exitEdit(${rowId})">X</div>
+                <h1>Edit Row</h1>
+                <div class="editGrouping editRow">
+                    <label for="name">Name:</label><input id="nameInput" name="name" type="text" value="${row.name}">
+                    <label for="rating" id="ratingInput">Rating</label><input name="rating" type="text" value=${row.rating}>
+                </div>
+                
+                <div class="editGrouping editCol">
+                    <label for="description" id="descInput">Description:</label><textarea name="description" type="textbox">${row.description}</textarea>       
+                </div>     
+                
+                <div class="editGrouping editCol">
+                <label for="address" id="addressInput">Address</label><input name="address" type="textbox" value="${row.address}">
+                <div class="editGrouping editRow">
+                    <label for="lat">Latitude:</label><input name="lat" type="text" value=${row.latitude}>
+                    <label for="long">Longitude:</label><input name="long" type="text" value=${row.longitude}>
+                </div>
+                </div>
+
+                <div class="editGrouping editRow">
+                    <label for="long">Contact Number:</label><input name="long" type="text" value=${row.phoneNumber}>
+                </div>
+
+                <div id="tagsDiv" class="editGrouping">
+                    <ul id="tagsUL">
+                    
+                    </ul>
+                </div>
+
+                <div id="photosEditDiv">
+
+                </div>
+
+                <div id="editActions">
+                    <div class="adminAction" id="cancelEdit" onclick="exitEdit(${rowId})">Cancel</div>
+                    <div class="adminAction" id="confirmEdit" onclick="commitEdit(${rowId})">Commit Changes</div>
+                </div>
+
+
+            <div>
+        </div>`
+
+    document.getElementsByClassName("modalContainer")[0].remove()
+    document.body.appendChild(modal)
+
+
+    tagsUL = document.getElementById("tagsUL")
+    row.tags.forEach(tag => {
+        tagsUL.innerHTML += `<li class="tagsLI">${tag}</li>`
+    })
+}
+
+function exitEdit(rowId){
+    document.getElementsByClassName("modalContainer")[0].remove()
+    expandRow(rowId)
+}
+
+function commitEdit(rowId){
+    let row = data.filter(row => row.id === rowId)[0]
+
+
+
+    row.name = document.getElementById("nameInput").value
+
+    document.getElementsByClassName("modalContainer")[0].remove()
+    expandRow(rowId)
+}
+
+
 
 function setMode(newMode){
     mode = newMode
@@ -441,7 +524,7 @@ basic table
 
 sort / search
 
----- fix gallery, add editing and adding
+---- fix gallery, finish commit edit function, review style for edit page
 
 
 

@@ -443,11 +443,11 @@ th {
     transform: scale(1.05);
 }
 
-#rowEdit, #deleteCancel {
+#rowEdit, #deleteCancel, #confirmEdit {
     background-color: lightskyblue;
 }
 
-#rowDelete, #deleteConfirm {
+#rowDelete, #deleteConfirm, #cancelEdit{
     background-color: red;
 }
 
@@ -485,6 +485,62 @@ th {
 }
 
 
+#editBox {
+    position: relative;
+    width: 60%;
+    height: min-content;
+    background-color: white;
+    margin-top: 20px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+#editBox h1 {
+    color: #141414;
+    margin-inline: auto;
+    margin-block: 10px;
+}
+
+#editBox label, #exitBox div label {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-right: 20px;
+    margin-block: 10px;
+}
+
+#editBox input, #editBox div input {
+    margin-right: 20px;
+    margin-block: 10px;
+    max-width: 40%;
+    font-size: 1.3rem; 
+}
+
+.editGrouping {
+    width: 90%;
+    margin-block: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #eee;
+    display: flex;
+    margin-inline: auto;
+}
+
+.editRow {
+    flex-direction: row;
+    align-items: center;
+}
+
+.editCol {
+    flex-direction: column;
+}
+
+#editActions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
 
 
 
