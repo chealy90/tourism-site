@@ -513,7 +513,7 @@ th {
 #editBox input, #editBox div input {
     margin-right: 20px;
     margin-block: 10px;
-    max-width: 40%;
+    width: max-content;
     font-size: 1.3rem; 
 }
 
@@ -536,11 +536,41 @@ th {
     flex-direction: column;
 }
 
+.editRowNoPadding {
+    padding-inline: 0;
+    padding-block: 7px;
+    margin-block: 10px;
+}
+
 #editActions {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
 }
+
+
+.deleteTagButton {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+
+.tagsLI {
+    font-size: 1.3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between
+}
+
+.tagsLI div {
+    margin-left: 10px;
+}
+
+
+
+
+
+
 
 
 

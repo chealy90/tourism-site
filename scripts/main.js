@@ -47,6 +47,7 @@ window.onload = () => {
             })
         })
         selectedTags = [...tagsList]
+        selectedTags.push("other")    
         let olElement = document.getElementById("tagsList")
         tagsList.forEach(tag => {
             let newLI = document.createElement("li")
@@ -87,6 +88,9 @@ function displayTable(displayData){
         return result
     })
 
+    
+
+
 
 
     //headers
@@ -95,6 +99,7 @@ function displayTable(displayData){
         htmlString += `<th onclick='${sortables.includes(header)?"sort(this.id)":"null"}'  id=${header.toLowerCase()}>${header}${header.toLowerCase()===currentSortField? (sortOrder===1?'▲':'▼'):""}</th>`
 
     })
+
 
 
     //table rows
@@ -165,7 +170,6 @@ function updateFilters(){
             selectedTags.push(cb.value)
         }
     })
-    console.log(selectedTags)
     displayTable(data)  
 }
 
@@ -379,7 +383,6 @@ function expandRow(rowId){
             <div id="rowEdit" class="adminAction" onclick="displayEditModal(${row.id})">Edit Entry</div>
             <div id="rowDelete" class="adminAction" onclick="displayDeleteModal(${row.id}, '${row.name}')">Delete Entry</div>`
         document.getElementById("infoDisplayDiv").appendChild(adminRow)
-        console.log("here")
 
 
     } 
@@ -450,11 +453,13 @@ function displayEditModal(rowId){
                 </div>     
                 
                 <div class="editGrouping editCol">
-                <label for="address" id="addressInput">Address</label><input name="address" type="textbox" value="${row.address}">
-                <div class="editGrouping editRow">
-                    <label for="lat">Latitude:</label><input name="lat" type="text" value=${row.latitude}>
-                    <label for="long">Longitude:</label><input name="long" type="text" value=${row.longitude}>
-                </div>
+                    <div class="editGrouping editRow editRowNoPadding">
+                    <label for="address" id="addressInput">Address</label><input name="address" type="textbox" value="${row.address}">
+                    </div>
+                    <div class="editGrouping editRow editRowNoPadding">
+                        <label for="lat">Latitude:</label><input name="lat" type="text" value=${row.latitude}>
+                        <label for="long">Longitude:</label><input name="long" type="text" value=${row.longitude}>
+                    </div>
                 </div>
 
                 <div class="editGrouping editRow">
@@ -465,6 +470,10 @@ function displayEditModal(rowId){
                     <ul id="tagsUL">
                     
                     </ul>
+                    <div class="addTagsDiv">
+                        <input type="text" class="newTagInput">
+                        <button type="button" onclick="addTag(${rowId})">Add Tag</button>
+                    </div>
                 </div>
 
                 <div id="photosEditDiv">
@@ -486,7 +495,7 @@ function displayEditModal(rowId){
 
     tagsUL = document.getElementById("tagsUL")
     row.tags.forEach(tag => {
-        tagsUL.innerHTML += `<li class="tagsLI">${tag}</li>`
+        tagsUL.innerHTML += `<li class="tagsLI" id="tag_${tag}"><span>${tag}</span><div class="deleteTagButton" onclick="deleteTag(${rowId}, '${tag}')">X</div></li>`
     })
 }
 
@@ -504,6 +513,27 @@ function commitEdit(rowId){
 
     document.getElementsByClassName("modalContainer")[0].remove()
     expandRow(rowId)
+}
+
+
+function deleteTag(rowId, tag){
+    let row = data.filter(row => row.id === rowId)[0]
+    for (let i = 0;i<row.tags.length;i++){
+        if (row.tags[i]===tag){
+            row.tags.splice(i, 1)
+        }
+    }
+   
+    document.getElementById(`tag_${tag}`).remove()
+}
+
+function addTag(rowId){
+    let newTag = document.getElementsByClassName("newTagInput")[0].value
+
+
+    data.filter(row => row.id===rowId)[0].tags.push(newTag)
+    document.getElementById("tagsUL").innerHTML += `<li class="tagsLI" id="tag_${newTag}"><span>${newTag}</span><div class="deleteTagButton" onclick="deleteTag(${rowId}, '${newTag}')">X</div></li>`
+    document.getElementsByClassName("newTagInput")[0].value = ""
 }
 
 
