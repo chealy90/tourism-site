@@ -245,6 +245,21 @@ function validateLogin(){
     document.getElementById("loginForm").innerHTML = 
         `<h3>Admin User: ${usernameInput}</h3>
         <button type="button" class="loginButton" onclick="logout()">Log Out</button>`   
+
+
+    
+    //enable adding new items
+    let newOption = document.createElement("div")
+    newOption.onclick = displayAddModal
+    newOption.id = "createEntryDiv"
+    newOption.innerHTML = `<h2>Create Entry</h2>
+                           <div id="plusIcon">+</div>`
+
+    document.getElementById("actionDivs").appendChild(newOption)
+    
+    
+
+    
 }
 
 function logout(){
@@ -261,6 +276,7 @@ function logout(){
 
         <button type="button" class="loginButton" onclick="validateLogin()">Log In</button>
         `
+    document.getElementById("createEntryDiv").remove()
 
 }
 
@@ -466,13 +482,15 @@ function displayEditModal(rowId){
                     <label for="long">Contact Number:</label><input name="long" type="text" value=${row.phoneNumber}>
                 </div>
 
-                <div id="tagsDiv" class="editGrouping">
-                    <ul id="tagsUL">
-                    
-                    </ul>
-                    <div class="addTagsDiv">
-                        <input type="text" class="newTagInput">
-                        <button type="button" onclick="addTag(${rowId})">Add Tag</button>
+                <div id="tagsDiv" class="editGrouping editCol">
+                    <h2>Tags Manager</h2>
+                    <div class="tagsManagerMain">
+                        <ul id="tagsUL">                    
+                        </ul>
+                        <div class="addTagsDiv">       
+                            <input type="text" class="newTagInput">
+                            <button type="button" onclick="addTag(${rowId})">Add Tag</button>
+                        </div>
                     </div>
                 </div>
 
@@ -536,11 +554,77 @@ function addTag(rowId){
     document.getElementsByClassName("newTagInput")[0].value = ""
 }
 
+function displayAddModal(){
+    let modal = document.createElement("div")
+    modal.classList.add("modalContainer")
+    modal.id = "addContainer"
+
+    modal.innerHTML = `
+        <div class="modalAlpha">
+            <div id="editBox">
+                <div class="modalExitButton" onclick="exitAdd()">X</div>
+                <h1>Create Entry</h1>
+                <div class="editGrouping editRow">
+                    <label for="name">Name:</label><input id="nameInput" name="name" type="text">
+                    <label for="rating" id="ratingInput">Rating</label><input name="rating" type="text">
+                </div>
+                
+                <div class="editGrouping editCol">
+                    <label for="description" id="descInput">Description:</label><textarea name="description" type="textbox"></textarea>       
+                </div>     
+                
+                <div class="editGrouping editCol">
+                    <div class="editGrouping editRow editRowNoPadding">
+                    <label for="address" id="addressInput">Address</label><input name="address" type="textbox">
+                    </div>
+                    <div class="editGrouping editRow editRowNoPadding">
+                        <label for="lat">Latitude:</label><input name="lat" type="text">
+                        <label for="long">Longitude:</label><input name="long" type="text">
+                    </div>
+                </div>
+
+                <div class="editGrouping editRow">
+                    <label for="long">Contact Number:</label><input name="long" type="text">
+                </div>
+
+                <div id="tagsDiv" class="editGrouping editCol">
+                    <h2>Tags Manager</h2>
+                    <div class="tagsManagerMain">
+                        <ul id="tagsUL">                    
+                        </ul>
+                        <div class="addTagsDiv">       
+                            <input type="text" class="newTagInput">
+                            <button type="button" onclick="addTag('new')">Add Tag</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="photosEditDiv">
+
+                </div>
+
+                <div id="editActions">
+                    <div class="adminAction" id="cancelEdit" onclick="exitAdd()">Cancel</div>
+                    <div class="adminAction" id="confirmEdit" onclick="createNewEntry()">Create</div>
+                </div>
 
 
-function setMode(newMode){
-    mode = newMode
+            <div>
+        </div>`
+
+    document.getElementById("mainContent").innerHTML = ""
+    document.body.appendChild(modal)
 }
+
+
+function exitAdd(){
+    document.getElementsByClassName("modalContainer")[0].remove()
+    displayTable(data)
+}
+
+
+
+
 
 
 
@@ -554,8 +638,7 @@ basic table
 
 sort / search
 
----- fix gallery, finish commit edit function, review style for edit page
-
+---- fix gallery, finish add functionality. validation, edit images
 
 
 add basic admin screen
