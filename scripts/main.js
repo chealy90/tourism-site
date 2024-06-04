@@ -21,6 +21,7 @@ let numImages
 let images
 
 let mode = "admin"
+let nextEntryIndex
 
 
 window.onload = () => {
@@ -37,6 +38,7 @@ window.onload = () => {
     .then(rawData => rawData.json())
     .then(jsonData => {
         data = jsonData
+        nextEntryIndex = data.length
         keys = Object.keys(data[0])
 
 
@@ -461,25 +463,25 @@ function displayEditModal(rowId){
                 <h1>Edit Row</h1>
                 <div class="editGrouping editRow">
                     <label for="name">Name:</label><input id="nameInput" name="name" type="text" value="${row.name}">
-                    <label for="rating" id="ratingInput">Rating</label><input name="rating" type="text" value=${row.rating}>
+                    <label for="rating">Rating</label><input id="ratingInput" name="rating" type="text" value=${row.rating}>
                 </div>
                 
                 <div class="editGrouping editCol">
-                    <label for="description" id="descInput">Description:</label><textarea name="description" type="textbox">${row.description}</textarea>       
+                    <label for="description">Description:</label><textarea id="descInput" name="description" type="textbox">${row.description}</textarea>       
                 </div>     
                 
                 <div class="editGrouping editCol">
                     <div class="editGrouping editRow editRowNoPadding">
-                    <label for="address" id="addressInput">Address</label><input name="address" type="textbox" value="${row.address}">
+                    <label for="address">Address</label><input id="addressInput" name="address" type="textbox" value="${row.address}">
                     </div>
                     <div class="editGrouping editRow editRowNoPadding">
-                        <label for="lat">Latitude:</label><input name="lat" type="text" value=${row.latitude}>
-                        <label for="long">Longitude:</label><input name="long" type="text" value=${row.longitude}>
+                        <label for="lat">Latitude:</label><input name="lat" id="latInput" type="text" value=${row.latitude}>
+                        <label for="long">Longitude:</label><input name="long" id="longInput" type="text" value=${row.longitude}>
                     </div>
                 </div>
 
                 <div class="editGrouping editRow">
-                    <label for="long">Contact Number:</label><input name="long" type="text" value=${row.phoneNumber}>
+                    <label for="phone">Contact Number:</label><input id="phoneInput" name="phone" type="text" value="${row.phoneNumber}">
                 </div>
 
                 <div id="tagsDiv" class="editGrouping editCol">
@@ -513,7 +515,7 @@ function displayEditModal(rowId){
 
     tagsUL = document.getElementById("tagsUL")
     row.tags.forEach(tag => {
-        tagsUL.innerHTML += `<li class="tagsLI" id="tag_${tag}"><span>${tag}</span><div class="deleteTagButton" onclick="deleteTag(${rowId}, '${tag}')">X</div></li>`
+        tagsUL.innerHTML += `<li class="tagsLI" id="tag_${tag}"><span>${tag}</span><div class="deleteTagButton" onclick="deleteTag('${tag}')">X</div></li>`
     })
 }
 
@@ -528,33 +530,45 @@ function commitEdit(rowId){
 
 
     row.name = document.getElementById("nameInput").value
+    row.rating = document.getElementById("ratingInput").value
+    row.description = document.getElementById("descInput").value
+    row.address = document.getElementById("addressInput").value
+    row.latitude = document.getElementById("latInput").value
+    row.longitude = document.getElementById("longInput").value
+    row.phoneNumber = document.getElementById("phoneInput").value
+
+    let newTags = []
+    let documentTags = Array.from(document.getElementsByClassName("tagsLI"))
+    documentTags.forEach(tag => {
+        let tagValue = tag.firstChild.innerHTML
+
+        newTags.push(tagValue)
+        console.log(tagsList.has(tagValue))
+        if (!tagsList.has(tagValue)){
+            tagsList.add(tagValue)
+            document.getElementById("tagsList").innerHTML += `<li><label>${tagValue}</label><input class="filterCB" type="checkbox"  value="${tagValue}" onchange="updateFilters()"></li>`
+        }
+    })
+
+    row.tags = newTags
+
 
     document.getElementsByClassName("modalContainer")[0].remove()
     expandRow(rowId)
 }
 
 
-function deleteTag(rowId, tag){
-    let row = data.filter(row => row.id === rowId)[0]
-    for (let i = 0;i<row.tags.length;i++){
-        if (row.tags[i]===tag){
-            row.tags.splice(i, 1)
-        }
-    }
-   
+function deleteTag(tag){
     document.getElementById(`tag_${tag}`).remove()
 }
 
 function addTag(rowId){
     let newTag = document.getElementsByClassName("newTagInput")[0].value
-
-
-    data.filter(row => row.id===rowId)[0].tags.push(newTag)
     document.getElementById("tagsUL").innerHTML += `<li class="tagsLI" id="tag_${newTag}"><span>${newTag}</span><div class="deleteTagButton" onclick="deleteTag(${rowId}, '${newTag}')">X</div></li>`
     document.getElementsByClassName("newTagInput")[0].value = ""
 }
 
-function displayAddModal(){
+function displayAddModal(){ 
     let modal = document.createElement("div")
     modal.classList.add("modalContainer")
     modal.id = "addContainer"
@@ -566,25 +580,25 @@ function displayAddModal(){
                 <h1>Create Entry</h1>
                 <div class="editGrouping editRow">
                     <label for="name">Name:</label><input id="nameInput" name="name" type="text">
-                    <label for="rating" id="ratingInput">Rating</label><input name="rating" type="text">
+                    <label for="rating">Rating</label><input id="ratingInput" name="rating" type="text">
                 </div>
                 
                 <div class="editGrouping editCol">
-                    <label for="description" id="descInput">Description:</label><textarea name="description" type="textbox"></textarea>       
+                    <label for="description">Description:</label><textarea id="descInput" name="description" type="textbox"></textarea>       
                 </div>     
                 
                 <div class="editGrouping editCol">
                     <div class="editGrouping editRow editRowNoPadding">
-                    <label for="address" id="addressInput">Address</label><input name="address" type="textbox">
+                    <label for="address">Address</label><input id="addressInput" name="address" type="textbox">
                     </div>
                     <div class="editGrouping editRow editRowNoPadding">
-                        <label for="lat">Latitude:</label><input name="lat" type="text">
-                        <label for="long">Longitude:</label><input name="long" type="text">
+                        <label for="lat">Latitude:</label><input id="latInput" name="lat" type="text">
+                        <label for="long">Longitude:</label><input id="longInput" name="long" type="text">
                     </div>
                 </div>
 
                 <div class="editGrouping editRow">
-                    <label for="long">Contact Number:</label><input name="long" type="text">
+                    <label for="phoneInput">Contact Number:</label><input id="phoneInput" name="long" type="text">
                 </div>
 
                 <div id="tagsDiv" class="editGrouping editCol">
@@ -623,6 +637,41 @@ function exitAdd(){
 }
 
 
+function createNewEntry(){
+    let row = {}
+    
+    row.id = nextEntryIndex
+    nextEntryIndex++ 
+
+    row.name = document.getElementById("nameInput").value
+    row.rating = document.getElementById("ratingInput").value
+    row.description = document.getElementById("descInput").value
+    row.address = document.getElementById("addressInput").value
+    row.latitude = document.getElementById("latInput").value
+    row.longitude = document.getElementById("longInput").value
+    row.phoneNumber = document.getElementById("phoneInput").value
+    row.photosURLs = []
+
+    let newTags = []
+    let documentTags = Array.from(document.getElementsByClassName("tagsLI"))
+    documentTags.forEach(tag => {
+        let tagValue = tag.firstChild.innerHTML
+
+        newTags.push(tagValue)
+        console.log(tagsList.has(tagValue))
+        if (!tagsList.has(tagValue)){
+            tagsList.add(tagValue)
+            document.getElementById("tagsList").innerHTML += `<li><label>${tagValue}</label><input class="filterCB" type="checkbox"  value="${tagValue}" onchange="updateFilters()"></li>`
+        }
+    })
+
+    row.tags = newTags
+    data.push(row)
+
+    exitAdd()   
+}
+
+
 
 
 
@@ -633,18 +682,5 @@ name, lat, long, address, description, phone, photos, tags, rating
 ▼▲
 /*
 TODO
-fetch data
-basic table
-
-sort / search
-
----- fix gallery, finish add functionality. validation, edit images
-
-
-add basic admin screen
-basic edit
-basic add
-delete
-
-
+---- allow user to add / delete images, validation, fix gallery
 */
