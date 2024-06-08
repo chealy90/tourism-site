@@ -447,12 +447,6 @@ function deleteRow(id){
 
 function displayEditModal(rowId){
     let row = data.filter(row => row.id === rowId)[0]
-    
-
-
-
-
-
     let modal = document.createElement("div")
     modal.classList.add("modalContainer")
     modal.id = "editContainer"
@@ -496,8 +490,15 @@ function displayEditModal(rowId){
                     </div>
                 </div>
 
-                <div id="photosEditDiv">
+                <div id="photosEditGrouping" class="editGrouping editCol">
+                    <h2>Photos Manager</h2>
+                    <div id="newPhotoDiv">
+                        <input type="file" id="imageFileInput">
+                        <button type="button" onclick="addImage()">Add Image</button>
+                    </div>
+                    <div class="editGrouping editRow editRowNoPadding" id="photosEditDiv">
 
+                    </div>
                 </div>
 
                 <div id="editActions">
@@ -509,6 +510,9 @@ function displayEditModal(rowId){
             <div>
         </div>`
 
+    
+
+
     document.getElementsByClassName("modalContainer")[0].remove()
     document.body.appendChild(modal)
 
@@ -516,6 +520,16 @@ function displayEditModal(rowId){
     tagsUL = document.getElementById("tagsUL")
     row.tags.forEach(tag => {
         tagsUL.innerHTML += `<li class="tagsLI" id="tag_${tag}"><span>${tag}</span><div class="deleteTagButton" onclick="deleteTag('${tag}')">X</div></li>`
+    })
+
+    //add images
+    let photosDiv = document.getElementById("photosEditDiv")
+    row.photosURLs.forEach((photo, index) => {
+        console.log(index)
+        photosDiv.innerHTML += `<div class="editUnit">
+                                    <div class="imgEditX" id="deleteForImg_${index}" onclick="deleteImg(${index})">X</div>
+                                    <img class="editImg" id="img_${index}" src="${photo}" width="100px">
+                                </div>`
     })
 }
 
@@ -537,6 +551,8 @@ function commitEdit(rowId){
     row.longitude = document.getElementById("longInput").value
     row.phoneNumber = document.getElementById("phoneInput").value
 
+
+    //update tags
     let newTags = []
     let documentTags = Array.from(document.getElementsByClassName("tagsLI"))
     documentTags.forEach(tag => {
@@ -549,8 +565,18 @@ function commitEdit(rowId){
             document.getElementById("tagsList").innerHTML += `<li><label>${tagValue}</label><input class="filterCB" type="checkbox"  value="${tagValue}" onchange="updateFilters()"></li>`
         }
     })
-
     row.tags = newTags
+
+    //update images
+    let newImages = []
+    let documentImgs = [...document.getElementsByClassName("editImg")]
+    documentImgs.forEach(img => {
+        newImages.push(img.src)
+    })
+
+    row.photosURLs = newImages
+
+    
 
 
     document.getElementsByClassName("modalContainer")[0].remove()
@@ -613,8 +639,15 @@ function displayAddModal(){
                     </div>
                 </div>
 
-                <div id="photosEditDiv">
+                <div id="photosEditGrouping" class="editGrouping editCol">
+                    <h2>Photos Manager</h2>
+                    <div id="newPhotoDiv">
+                        <input type="file" id="imageFileInput">
+                        <button type="button" onclick="addImage()">Add Image</button>
+                    </div>
+                    <div class="editGrouping editRow editRowNoPadding" id="photosEditDiv">
 
+                    </div>
                 </div>
 
                 <div id="editActions">
@@ -652,6 +685,7 @@ function createNewEntry(){
     row.phoneNumber = document.getElementById("phoneInput").value
     row.photosURLs = []
 
+    //add tags
     let newTags = []
     let documentTags = Array.from(document.getElementsByClassName("tagsLI"))
     documentTags.forEach(tag => {
@@ -664,14 +698,54 @@ function createNewEntry(){
             document.getElementById("tagsList").innerHTML += `<li><label>${tagValue}</label><input class="filterCB" type="checkbox"  value="${tagValue}" onchange="updateFilters()"></li>`
         }
     })
-
     row.tags = newTags
-    data.push(row)
 
+    //add images
+    let newImages = []
+    let documentImgs = [...document.getElementsByClassName("editImg")]
+    documentImgs.forEach(img => {
+        newImages.push(img.src)
+    })
+    row.photosURLs = newImages
+
+
+    data.push(row)
     exitAdd()   
 }
 
 
+function deleteImg(index){
+    document.getElementById(`img_${index}`).remove()
+    document.getElementById(`deleteForImg_${index}`).remove()
+
+}
+
+function addImage(){
+    let path = document.getElementById("imageFileInput").value.split("\\")
+    if (path===""){
+        return
+    }
+    path = path[path.length-1]
+    let images = [...document.getElementsByClassName("editImg")]
+    console.log(images)
+    if (images.length===0){
+        index = 0
+    } else {
+        index = images[images.length-1].id.split("_")[1]
+    }
+    
+
+    //add item to display
+    document.getElementById("photosEditDiv").innerHTML += 
+                `<div class="editUnit">
+                    <div class="imgEditX" id="deleteForImg_${index}" onclick="deleteImg(${index})">X</div>
+                    <img class="editImg" id="img_${index}" src="${`../images/${path}`}" width="100px">
+                </div>`
+
+    //reset file input
+    document.getElementById("imageFileInput").value = ""
+
+}
 
 
 
@@ -682,5 +756,5 @@ name, lat, long, address, description, phone, photos, tags, rating
 ▼▲
 /*
 TODO
----- allow user to add / delete images, validation, fix gallery
+---- fix style on adding/removing images, validation, fix gallery, fix how table looks when empty
 */
