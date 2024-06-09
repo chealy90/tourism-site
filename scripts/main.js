@@ -527,8 +527,8 @@ function displayEditModal(rowId){
     row.photosURLs.forEach((photo, index) => {
         console.log(index)
         photosDiv.innerHTML += `<div class="editUnit">
-                                    <div class="imgEditX" id="deleteForImg_${index}" onclick="deleteImg(${index})">X</div>
-                                    <img class="editImg" id="img_${index}" src="${photo}" width="100px">
+                                    <div class="imgEditX deleteImgButton" id="deleteForImg_${index}" onclick="deleteImg(${index})">X</div>
+                                    <img class="editImg" id="img_${index}" src="${photo}">
                                 </div>`
     })
 }
@@ -671,6 +671,10 @@ function exitAdd(){
 
 
 function createNewEntry(){
+    let errors = validateFormInput()
+    if (errors.length!==0){
+        return
+    }
     let row = {}
     
     row.id = nextEntryIndex
@@ -721,30 +725,37 @@ function deleteImg(index){
 }
 
 function addImage(){
-    let path = document.getElementById("imageFileInput").value.split("\\")
-    if (path===""){
+    let input = document.getElementById("imageFileInput").value
+    if (input===""){
         return
     }
+    let path = input.split("\\")
     path = path[path.length-1]
+
+
     let images = [...document.getElementsByClassName("editImg")]
     console.log(images)
     if (images.length===0){
         index = 0
     } else {
-        index = images[images.length-1].id.split("_")[1]
+        index = parseInt(images[images.length-1].id.split("_")[1]) + 1
     }
     
 
     //add item to display
     document.getElementById("photosEditDiv").innerHTML += 
                 `<div class="editUnit">
-                    <div class="imgEditX" id="deleteForImg_${index}" onclick="deleteImg(${index})">X</div>
-                    <img class="editImg" id="img_${index}" src="${`../images/${path}`}" width="100px">
+                    <div class="imgEditX deleteImgButton" id="deleteForImg_${index}" onclick="deleteImg(${index})">X</div>
+                    <img class="editImg" id="img_${index}" src="${`../images/${path}`}">
                 </div>`
 
     //reset file input
     document.getElementById("imageFileInput").value = ""
 
+}
+
+function validateFormInput(){
+    return []
 }
 
 
@@ -756,5 +767,6 @@ name, lat, long, address, description, phone, photos, tags, rating
 ▼▲
 /*
 TODO
----- fix style on adding/removing images, validation, fix gallery, fix how table looks when empty
+---- validation, fix gallery, fix how table looks when empty
+    -- possibly add limit to number of images
 */
