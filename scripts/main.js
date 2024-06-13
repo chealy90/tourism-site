@@ -334,6 +334,8 @@ function expandRow(rowId){
                 })
             }
 
+            modalHtml += `</ul></div>`
+
             numImages = row.photosURLs.length
             imgIndex = 0
             images = row.photosURLs.map(imgData => {
@@ -346,18 +348,18 @@ function expandRow(rowId){
             
 
 
-            modalHtml += `</ul>
-                            </div>
-
+            modalHtml += `
             <div id="infoModalGalleryRow">
                 <div id="slideshowContainer">
                     <div id="imagesContainer">
-                        <div id="images"></div>
+                        <div id="images">
+                            <img id="galleryImg" src="${images[imgIndex].src}"> 
+                        </div>
                     </div>
-                </div> 
-                <div id="dots">
-                
-                </div>            
+                 
+                    <div id="dots">                
+                    </div>    
+                </div>        
             </div>
         </div>
         </div>`
@@ -373,26 +375,24 @@ function expandRow(rowId){
     document.getElementsByTagName("body")[0].appendChild(modalElement)  
 
     //add gallery images
-    let container = document.getElementById("imagesContainer")
-    let imagesContainer = document.getElementById("images")
+    let imagesContainer = document.getElementById("imagesContainer")
+    let imagesDiv = document.getElementById("images")
     let dotsContainer = document.getElementById("dots")
+    
+    
     for (let i=0;i<images.length;i++){
-        let input = document.createElement("input")
-        input.name = `img${i}`
-        input.type = "radio"
-        input.id = `img${i}`
-        container.appendChild(input)
-        images[i].id = `m${i}`
-        imagesContainer.appendChild(images[i])
-        let newDot = document.createElement("label")
-        newDot.setAttribute("for", `img${i}`)
-        newDot.classList.add("galleryDotButton")
-        newDot.onclick = () => {
-            //console.log(document.getElementById("imagesContainer").children)
-        }
-        dotsContainer.appendChild(newDot)
-
+        //input
+        imagesContainer.innerHTML += `<input type="radio" name="slide" id="img${i}" onclick="updateGallery()" class="galleryInput">`
+        //dot
+        dotsContainer.innerHTML += `<label for="img${i}" class="galleryDotButton"></label>`
     }
+
+
+    //ensure first is always checked
+    document.getElementById("img0").checked = true
+
+
+    
     //add admin controls
     if (mode==="admin"){
         let adminRow = document.createElement("div")
@@ -404,6 +404,7 @@ function expandRow(rowId){
 
 
     } 
+
     
 }
 
@@ -756,6 +757,18 @@ function addImage(){
 
 function validateFormInput(){
     return []
+}
+
+function updateGallery(){
+    let checkedInput = document.querySelector('input[name="slide"]:checked')
+    imgIndex = parseInt(checkedInput.id.charAt(checkedInput.id.length -1))
+    document.getElementById("galleryImg").src = images[imgIndex].src
+    
+
+    
+    
+    
+
 }
 
 
