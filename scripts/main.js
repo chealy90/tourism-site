@@ -304,11 +304,11 @@ function expandRow(rowId){
                     <div id="coordsDiv">
                         <div>
                             <h4>Latitude</h4>
-                            <p>${row.latitude}</p>
+                            <p>${row.latitude === "" ? "-" : row.latitude}</p>
                         </div>
                         <div>
                             <h4>Longitude</h4>
-                            <p>${row.longitude}</p>
+                            <p>${row.longitude === ""? "-" : row.longitude}</p>
                         </div>
                         <a href="${mapsURL}" target="_blank">
                             <img src="images/google-maps.png"> 
@@ -386,7 +386,6 @@ function expandRow(rowId){
         //dot
         dotsContainer.innerHTML += `<label for="img${i}" class="galleryDotButton"></label>`
     }
-
 
     //ensure first is always checked
     document.getElementById("img0").checked = true
@@ -495,7 +494,7 @@ function displayEditModal(rowId){
                     <h2>Photos Manager</h2>
                     <div id="newPhotoDiv">
                         <input type="file" id="imageFileInput">
-                        <button type="button" onclick="addImage()">Add Image</button>
+                        <button type="button" onclick="addImage(${rowId})">Add Image</button>
                     </div>
                     <div class="editGrouping editRow editRowNoPadding" id="photosEditDiv">
 
@@ -540,10 +539,20 @@ function exitEdit(rowId){
 }
 
 function commitEdit(rowId){
+    //handle validation first
+    let errors = validateFormInput()
+    if (errors.length>0){
+        let errorMessage = ``
+        errors.forEach(msg => {
+            errorMessage += msg + "\n"
+        })
+        window.alert(errorMessage)
+        return
+    }
+
+
+
     let row = data.filter(row => row.id === rowId)[0]
-
-
-
     row.name = document.getElementById("nameInput").value
     row.rating = document.getElementById("ratingInput").value
     row.description = document.getElementById("descInput").value
@@ -560,7 +569,6 @@ function commitEdit(rowId){
         let tagValue = tag.firstChild.innerHTML
 
         newTags.push(tagValue)
-        console.log(tagsList.has(tagValue))
         if (!tagsList.has(tagValue)){
             tagsList.add(tagValue)
             document.getElementById("tagsList").innerHTML += `<li><label>${tagValue}</label><input class="filterCB" type="checkbox"  value="${tagValue}" onchange="updateFilters()"></li>`
@@ -586,12 +594,16 @@ function commitEdit(rowId){
 
 
 function deleteTag(tag){
+    console.log(`tag_${tag}`)
     document.getElementById(`tag_${tag}`).remove()
 }
 
 function addTag(rowId){
     let newTag = document.getElementsByClassName("newTagInput")[0].value
-    document.getElementById("tagsUL").innerHTML += `<li class="tagsLI" id="tag_${newTag}"><span>${newTag}</span><div class="deleteTagButton" onclick="deleteTag(${rowId}, '${newTag}')">X</div></li>`
+    if (newTag===""){
+        return
+    }
+    document.getElementById("tagsUL").innerHTML += `<li class="tagsLI" id="tag_${newTag}"><span>${newTag}</span><div class="deleteTagButton" onclick="deleteTag('${newTag}')">X</div></li>`
     document.getElementsByClassName("newTagInput")[0].value = ""
 }
 
@@ -673,11 +685,18 @@ function exitAdd(){
 
 function createNewEntry(){
     let errors = validateFormInput()
-    if (errors.length!==0){
+    if (errors.length>0){
+        let errorMessage = ``
+        errors.forEach(msg => {
+            errorMessage += msg + "\n"
+        })
+        window.alert(errorMessage)
         return
     }
+
+
+
     let row = {}
-    
     row.id = nextEntryIndex
     nextEntryIndex++ 
 
@@ -720,8 +739,17 @@ function createNewEntry(){
 
 
 function deleteImg(index){
-    document.getElementById(`img_${index}`).remove()
-    document.getElementById(`deleteForImg_${index}`).remove()
+    let imgUnits = [...document.getElementsByClassName("editUnit")]
+    imgUnits.forEach(unit => {
+        if (unit.lastElementChild.id===`img_${index}`){
+            unit.remove()
+        }
+    })
+    
+    //activate if less than 5 images
+    if ([...document.getElementsByClassName("editUnit")].length < 5){
+        document.getElementById("imageFileInput").disabled = false
+    }
 
 }
 
@@ -753,22 +781,70 @@ function addImage(){
     //reset file input
     document.getElementById("imageFileInput").value = ""
 
+    //deactivate if 5 images reached
+    if ([...document.getElementsByClassName("editUnit")].length>=5){
+        document.getElementById("imageFileInput").disabled = true
+    }
+
 }
 
 function validateFormInput(){
-    return []
+    let errorsArray = []
+    //name
+    if (document.getElementById("nameInput").value === ""){
+        errorsArray.push("-Name is a required field.")
+    }
+
+    //rating must be between 0 and 5
+    let ratingValue = document.getElementById("ratingInput").value
+    let ratingRegex = /[a-z]/g
+    if (ratingValue === ""){
+        errorsArray.push("-Rating is a required field.")
+    } else if (parseFloat(ratingValue) > 5 || parseFloat(ratingValue) < 0 || ratingRegex.test(ratingValue)){
+        errorsArray.push("-Rating must be a number between 0 and 5.")
+    }
+
+    //description
+    if (document.getElementById("descInput").value.length < 10){
+        errorsArray.push("-Description must be at least 10 characters long.")
+    }
+
+    //address 
+    
+    if(document.getElementById("addressInput").value === ""){
+        errorsArray.push("-Address is a required field.")
+    } else if (document.getElementById("addressInput").value.length < 10){
+        errorsArray.push("-Address must be at least 10 characters.")
+    }
+
+    //long and lat
+    let latRegex = /^(-?[1-8]?\d(?:\.\d{1,8})?|90(?:\.0{1,8})?)$/
+    let longRegex = /^(-?(?:1[0-7]|[1-9])?\d(?:\.\d{1,8})?|180(?:\.0{1,8})?)$/
+    let latInput = document.getElementById("latInput").value
+    let longInput = document.getElementById("longInput").value
+
+    if (latInput !== "" && !latRegex.test(latInput)){
+        errorsArray.push("-Please enter a valid latitude and longitude.")
+    } else if (longInput !== "" && !longRegex.test(longInput)){
+        errorsArray.push("-Please enter a valid latitude and longitude.")
+    }
+    
+
+    //phone number
+    let phoneInput = document.getElementById("phoneInput").value
+    let phoneRegex = /^\+?[0-9]{7,15}$/
+    if (phoneInput!=="" && !phoneRegex.test(phoneInput)){
+        errorsArray.push("-Invalid phone number entered.")
+    }
+
+    console.log(errorsArray)
+    return errorsArray
 }
 
 function updateGallery(){
     let checkedInput = document.querySelector('input[name="slide"]:checked')
     imgIndex = parseInt(checkedInput.id.charAt(checkedInput.id.length -1))
     document.getElementById("galleryImg").src = images[imgIndex].src
-    
-
-    
-    
-    
-
 }
 
 
@@ -780,6 +856,6 @@ name, lat, long, address, description, phone, photos, tags, rating
 ▼▲
 /*
 TODO
----- validation, fix gallery, fix how table looks when empty
+---- fix how table looks when empty
     -- possibly add limit to number of images
 */
