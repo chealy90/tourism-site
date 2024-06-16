@@ -99,8 +99,18 @@ function displayTable(displayData){
     let htmlString = `<table><tr>`
     mainHeaders.forEach(header => {
         htmlString += `<th onclick='${sortables.includes(header)?"sort(this.id)":"null"}'  id=${header.toLowerCase()}>${header}${header.toLowerCase()===currentSortField? (sortOrder===1?'▲':'▼'):""}</th>`
-
     })
+    htmlString += `</tr>`
+
+
+    if (displayData.length === 0){
+        htmlString += `<tr class="noResultsRow">
+                            <td class="noResultsTD" colspan=6>
+                                <img src="../images/sad.png">
+                                <p>No Results</p>
+                            </td>
+                        </tr>`
+    }
 
 
 
@@ -856,6 +866,5 @@ name, lat, long, address, description, phone, photos, tags, rating
 ▼▲
 /*
 TODO
----- fix how table looks when empty
-    -- possibly add limit to number of images
+---- clean up appearance and make responsive make footer w attributes
 */

@@ -55,8 +55,14 @@ h1 {
     font-size: 3.5rem;
 }
 
+#mainContent {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
 
 table {
+    width: 100%;
     border: none;
     border-radius: 5px;
     font-size: 1.1rem;
@@ -114,6 +120,15 @@ th {
 .tableImg {
     width: 300px;
 }
+
+.noResultsRow {
+    width: 100%;
+}
+
+.noResultsTD {
+    padding-block: 7rem;
+}
+
 
 #wrapper {
     width: 90%;
@@ -631,6 +646,14 @@ th {
 .imgEditX {
     position: relative;
     right: -185px;
+}
+
+
+footer {
+    height: 10vh;
+    margin-top: 10px;
+    background-color: #141414;
+    width: 100%;   
 }
 
 
