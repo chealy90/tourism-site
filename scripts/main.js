@@ -866,5 +866,7 @@ name, lat, long, address, description, phone, photos, tags, rating
 ▼▲
 /*
 TODO
----- clean up appearance and make responsive make footer w attributes
+---- clean up appearance and make responsive
+
+
 */
