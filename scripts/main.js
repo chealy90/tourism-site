@@ -478,7 +478,7 @@ function displayEditModal(rowId){
                     <div class="editGrouping editRow editRowNoPadding">
                     <label for="address">Address</label><input id="addressInput" name="address" type="textbox" value="${row.address}">
                     </div>
-                    <div class="editGrouping editRow editRowNoPadding">
+                    <div class="editGrouping editRowNoPadding">
                         <label for="lat">Latitude:</label><input name="lat" id="latInput" type="text" value=${row.latitude}>
                         <label for="long">Longitude:</label><input name="long" id="longInput" type="text" value=${row.longitude}>
                     </div>
@@ -640,7 +640,7 @@ function displayAddModal(){
                     <div class="editGrouping editRow editRowNoPadding">
                     <label for="address">Address</label><input id="addressInput" name="address" type="textbox">
                     </div>
-                    <div class="editGrouping editRow editRowNoPadding">
+                    <div class="editGrouping editRowNoPadding">
                         <label for="lat">Latitude:</label><input id="latInput" name="lat" type="text">
                         <label for="long">Longitude:</label><input id="longInput" name="long" type="text">
                     </div>
