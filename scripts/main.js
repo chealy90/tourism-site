@@ -23,6 +23,29 @@ let images
 let mode = "admin"
 let nextEntryIndex
 
+const actionDivsHTML = `
+    <div id="searchBox">
+        <h3>Know what your looking for?</h3>
+        <label for="textBox">Enter a search term:</label>
+        <input type="text" name="textBox" placeholder="e.g. Temple bar" oninput="searchData(this.value)">
+    </div>
+
+    <div id="filterBox">
+        <h3>Search against tags</h3>
+        <div id="tagsBox">
+            <ul id="tagsList">
+                            
+            </ul>
+        </div>
+    </div>`
+
+let currentTagsList
+
+
+
+
+
+
 
 window.onload = () => {
     //users
@@ -119,10 +142,10 @@ function displayTable(displayData){
         htmlString += `<tr onclick="expandRow('${row.id}')">`
         mainKeys.forEach(key=> {
             if (key==="photo"){
-                htmlString += `<td><img class="tableImg" src=${row["photosURLs"][0]}></td>`
+                htmlString += `<td class="imgDiv"><img class="tableImg" src=${row["photosURLs"][0]}></td>`
             }
             else if (key==="tags"){
-                htmlString += "<td><ul class='tagsList'>"
+                htmlString += `<td class='tagsDiv' data-td-title="${key}"><ul class='tagsList'>`
                 let tags = row["tags"]
                 tags.forEach(tag => {
                     htmlString += `<li>${tag}</li>`
@@ -131,7 +154,7 @@ function displayTable(displayData){
             }
             
             else {
-                htmlString += `<td>${row[key]}</td>`
+                htmlString += `<td class="tr_${key}" data-td-title="${key}">${row[key]}</td>`
             }
             
         })
@@ -226,7 +249,10 @@ function displayProfileModal(){
     modalElement.setAttribute("class", "modalContainer")
     modalElement.innerHTML = modalHtml
     //clear table first
+    currentTagsList = document.getElementById("tagsList").innerHTML
     document.getElementById("mainContent").innerHTML = ""
+    document.getElementById("actionDivs").innerHTML = ""
+    
     document.getElementsByTagName("body")[0].appendChild(modalElement)
     
 }
@@ -235,6 +261,8 @@ function exitModal(){
     let modalElement = document.getElementsByClassName("modalContainer")[0]
     modalElement.remove()
     displayTable(data)
+    document.getElementById("actionDivs").innerHTML = actionDivsHTML
+    document.getElementById("tagsList").innerHTML = currentTagsList
 }
 
 function validateLogin(){
@@ -264,10 +292,9 @@ function validateLogin(){
     let newOption = document.createElement("div")
     newOption.onclick = displayAddModal
     newOption.id = "createEntryDiv"
-    newOption.innerHTML = `<h2>Create Entry</h2>
-                           <div id="plusIcon">+</div>`
+    newOption.innerHTML = `+`
 
-    document.getElementById("actionDivs").appendChild(newOption)
+    document.getElementById("headerWrapper").appendChild(newOption)
     
     
 
@@ -383,6 +410,12 @@ function expandRow(rowId){
     //clear table first
     document.getElementById("mainContent").innerHTML = ""
     document.getElementsByTagName("body")[0].appendChild(modalElement)  
+    //clear action divs
+    if (document.getElementById("actionDivs").innerHTML !== ""){
+        currentTagsList = document.getElementById("tagsList").innerHTML
+    }
+    
+    document.getElementById("actionDivs").innerHTML = ""
 
     //add gallery images
     let imagesContainer = document.getElementById("imagesContainer")
@@ -535,7 +568,6 @@ function displayEditModal(rowId){
     //add images
     let photosDiv = document.getElementById("photosEditDiv")
     row.photosURLs.forEach((photo, index) => {
-        console.log(index)
         photosDiv.innerHTML += `<div class="editUnit">
                                     <div class="imgEditX deleteImgButton" id="deleteForImg_${index}" onclick="deleteImg(${index})">X</div>
                                     <img class="editImg" id="img_${index}" src="${photo}">

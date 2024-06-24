@@ -122,10 +122,12 @@ th {
     border: 1px solid black;
     white-space: nowrap;
     min-width: 175px;
-    
-   
 }
 
+
+.tr_description {
+    min-width: 10%;
+}
 
 .tableImg {
     width: 300px;
@@ -147,14 +149,16 @@ th {
 }
 
 #actionDivs {
-    width: 90%;
+    width: 100%;
     margin: 20px auto;
     display: flex;
     justify-content: space-between;
 }
 
+
 #actionDivs div {
-    margin-inline: 10px;
+    width: max-content;
+    margin-inline: 8px;
 }
 
 #searchBox {
@@ -205,19 +209,27 @@ th {
 }
 
 #createEntryDiv {
-    text-align: center;
-    width: max-content;
-    background-color: lightblue;
+    transition: 0.1s;
+    position: absolute;
+    top: 50px;
+    right: 130px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
     color: #141414;
-    border-radius: 5px;
+    background-color: #eee;
+    text-align: center;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    justify-content: space-evenly;
-    font-size: 1.2rem;
+    font-size: 2rem;
+    border: 1px solid black;
 }
 
-
+#createEntryDiv:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
 
 #plusIcon {
     font-size: 3rem;
@@ -503,6 +515,8 @@ th {
     justify-content: center;
     align-items: center;
     transition: 0.1s;
+    text-align: center;
+    line-height: 2.35rem;
 }
 
 .adminAction:hover, .deleteAction:hover {
@@ -528,14 +542,12 @@ th {
 
 
 #deleteModal {
-    position: absolute;
     z-index: 100;
     width: 33%;
     height: 500px;
     background-color: white;
-    margin: auto;
-    left: 33%;
-    top: 100px;
+    margin-inline: auto;
+    margin-top: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -714,18 +726,90 @@ footer div {
 
 
 /* responsiveness */
-@media screen AND (max-width:1400px) {
-    body {
-        background-color: green;
+@media screen AND (max-width: 1400px){
+    .imgDiv img {
+        width: 150px;
+    }
+}
+
+@media screen AND (max-width: 1200px){
+    #wrapper, #actionDivs {
+        width: 100%;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
     }
 
-    #wrapper {
-        min-width: none;
-        width: 100%;
+    #filterBox h3 {
+        text-align: center;
+    }
+
+    #tagsList {
+        grid-template-columns: repeat(2, 150px);
+        grid-template-rows: auto;
+    }
+
+    #infoDisplayDiv {
+        width: 80%;
+    }
+
+    #deleteModal {
+        width: 80%;
+    }
+
+ 
+}
+
+
+@media screen AND (max-width:1000px) {
+    #profileLogo {
+        top: 20px;
+        right: 20px;
+        width: 60px;
     }
 
     #createEntryDiv {
-        padding-inline: 10px;
+        top: 20px;
+        right: 90px;
+        width: 60px;
+        height: 60px;
+        border: 1px solid black;
+    }
+
+    #actionDivs {
+        flex-direction: column;
+    }
+
+    #actionDivs div {
+        width: 95%;
+        margin: 5px auto;
+    }
+
+    #searchBox h3 {
+        font-size: 2.4rem;
+        line-height: 2.7rem;
+        margin-bottom: 40px;
+    }
+
+    #searchBox label {
+        font-size: 1.6rem;
+    }
+
+    
+    #tagsList {
+        grid-template-columns: repeat(5, 150px);
+        grid-template-rows: auto;
+    }
+
+
+
+    #wrapper {
+        min-width: none;
+        width: 90%;
+    }
+
+
+    table {
+        border: none;
     }
 
    
@@ -739,27 +823,146 @@ footer div {
 
     table tr {
         margin-bottom: 20px;
+        border: none;
     }
 
+    table tr td {
+        padding: 10px;
+    }
+
+    .tr_name {
+        font-size: 2.5rem;
+        padding: 30px 20px;
+    }
+
+    .tr_address:before {
+        content: attr(data-td-title) ": ";
+        text-transform: capitalize;
+        font-weight: bold;
+    }
+
+    .tr_description:before {
+        content: attr(data-td-title) ": ";
+        text-transform: capitalize;
+        font-weight: bold;
+    }
+
+    .imgDiv {
+        display: flex;
+        justify-content: center;;
+        align-items: flex-start;
+    }
+
+    .imgDiv img {
+        width: 75%;
+    }
+
+    .tagsDiv:before {
+        content: attr(data-td-title) ": ";
+        text-transform: capitalize;
+        font-weight: bold;
+    }
+
+    .tr_rating:before {
+        content: attr(data-td-title) ": ";
+        text-transform: capitalize;
+        font-weight: bold;
+    }    
 
 
-    
+
+    /* login modal */
+    #profileModal {
+        width: 75%;
+    }
+
+    #loginForm {
+        width: 75%;
+    }
+
+}
+
+@media screen AND (max-width: 900px){
+    #tagsList {
+        grid-template-columns: repeat(4, 150px);
+        grid-template-rows: auto;
+    }
+
+    #infoDisplayDiv {
+        width: 90%; 
+    }
+
+    footer {
+        padding: 60px;
+        text-align: center;
+    }
+
+    footer #footerAttributions {
+        width: 75%;
+    }
+}
+
+@media screen AND (max-width: 800px){
+    #tagsList {
+        grid-template-columns: repeat(3, 150px);
+        grid-template-rows: auto;
+    }
+
+    #infoDisplayDiv {
+        width: 95%;
+    }
+
+    #slideshowContainer {
+        width: 95%;
+    }
+
+    #infoModalRowTwo {
+        flex-direction: column;
+    }
+
+    #infoModalRowTwo div {
+        width: 95%;
+        margin: 10px auto;
+    }
 }
 
 
 
+@media screen AND (max-width: 700px){
+    
+
+    #profileLogo {
+        top: 10px;
+        right: 10px;
+    }
+
+    #createEntryDiv {
+        top: 10px;
+        right: 80px;
+        border: 1px solid black;
+    }
 
 
+    #actionDivs div {
+        width: 90%;
+    }  
 
+    #searchBox {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 
+    #searchBox label {
+        margin-bottom: 10px;
+    }
+}
 
+@media screen AND (max-width: 600px){
+    #tagsList {
+        grid-template-columns: repeat(2, 150px);
+        grid-template-rows: auto;
+    }
 
-
-
-
-
-
-
-
-
-
+    
+}
