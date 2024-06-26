@@ -184,6 +184,10 @@ th {
     font-size: 1.1em;
 }
 
+#newPhotoDiv button {
+    padding: 2px 5px;
+}
+
 
 #filterBox {
     width: max-content;
@@ -245,6 +249,10 @@ th {
     cursor: pointer; 
 }
 
+#manualSort {
+    visibility: hidden;
+}
+
 
 
 /* modals */
@@ -267,6 +275,7 @@ th {
     width: 100%;
     height: 100vh;
     background-color: rgba(20, 20, 20, 0.7);
+    margin-bottom: 20px;
 }
 
 .modalExitButton {
@@ -344,7 +353,7 @@ th {
     background-color: white;
     height: auto;
     margin-inline: auto;
-    margin-top: 20px;
+    margin-block: 20px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -506,7 +515,8 @@ th {
 }
 
 .adminAction{
-    width: 30%;
+    width: 35%;
+    padding-inline: 40px;
     height: 100px;
     color: #eee;
     font-size: 2.25rem;
@@ -569,7 +579,7 @@ th {
     width: 60%;
     height: min-content;
     background-color: white;
-    margin-top: 20px;
+    margin-block: 20px;
     margin-inline: auto;
     display: flex;
     flex-direction: column;
@@ -588,6 +598,7 @@ th {
     font-weight: 500;
     margin-right: 20px;
     margin-block: 10px;
+    width: min-content;
 }
 
 #editBox input, #editBox div input {
@@ -620,6 +631,13 @@ th {
     padding-inline: 0;
     padding-block: 7px;
     margin-block: 10px;
+}
+
+#descInput {
+    max-width: 100%;
+    width: 100%;
+
+    
 }
 
 #editActions {
@@ -675,14 +693,18 @@ th {
     align-items: flex-start;
 }
 
+#photosEditDiv div {
+    width: 20%;
+}
+
 
 .editImg {
-    width: 200px;
+    width: 100%;
 }
 
 .imgEditX {
     position: relative;
-    right: -185px;
+    right: -90%;
 }
 
 
@@ -730,6 +752,16 @@ footer div {
     .imgDiv img {
         width: 150px;
     }
+
+    #editBox {
+        width: 75%;
+    }
+
+    /*
+
+    
+
+    */
 }
 
 @media screen AND (max-width: 1200px){
@@ -754,6 +786,12 @@ footer div {
 
     #deleteModal {
         width: 80%;
+    }
+
+    #nameRatingGrouping, #latLongGrouping {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
     }
 
  
@@ -800,6 +838,21 @@ footer div {
         grid-template-rows: auto;
     }
 
+    #actionDivs #manualSort {
+        visibility: visible;
+        width: 60%;
+        background-color: lightblue;
+        padding-block: 20px;
+        display: flex;
+        justify-content: center;
+        font-size: 1.5rem;
+        border-radius: 5px;
+    }
+
+    #actionDivs #manualSort label {
+        margin-right: 20px;
+    }
+
 
 
     #wrapper {
@@ -832,6 +885,7 @@ footer div {
 
     .tr_name {
         font-size: 2.5rem;
+        line-height: 2.7rem;
         padding: 30px 20px;
     }
 
@@ -854,7 +908,7 @@ footer div {
     }
 
     .imgDiv img {
-        width: 75%;
+        width: 90%;
     }
 
     .tagsDiv:before {
@@ -879,6 +933,13 @@ footer div {
     #loginForm {
         width: 75%;
     }
+
+
+    #editBox {
+        width: 90%;
+    }
+
+    
 
 }
 
@@ -929,8 +990,6 @@ footer div {
 
 
 @media screen AND (max-width: 700px){
-    
-
     #profileLogo {
         top: 10px;
         right: 10px;
@@ -956,6 +1015,36 @@ footer div {
     #searchBox label {
         margin-bottom: 10px;
     }
+
+    .tagsManagerMain {
+        display: flex;
+        flex-direction: column;
+        
+    }
+
+    #newPhotoDiv * {
+        margin-left: 50px;
+    }
+
+    #newPhotoDiv  input{
+        width: min-content;
+    }
+
+    #tagsUl li {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    #tagsUl li div {
+        position: relative;
+    }
+
+    
+
+    
+
+    
+    
 }
 
 @media screen AND (max-width: 600px){

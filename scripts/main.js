@@ -20,7 +20,7 @@ let imgIndex
 let numImages
 let images
 
-let mode = "admin"
+let mode = "guest"
 let nextEntryIndex
 
 const actionDivsHTML = `
@@ -37,7 +37,18 @@ const actionDivsHTML = `
                             
             </ul>
         </div>
-    </div>`
+    </div>
+    
+    <div id="manualSort">
+        <label for="sortInput">Sort By:</label>
+        <select name="sortInput" onchange="manualSort(this.value)">
+            <option value="name_a_z">Name (A-Z)</option>
+            <option value="name_z_a">Name (Z-A)</option>
+            <option value="rating_high_low">Rating (High - Low)</option>
+            <option value="rating_low_high">Rating (Low - High</option>
+        </select>
+    </div>
+    `
 
 let currentTagsList
 
@@ -188,6 +199,26 @@ function sort(field){
     displayTable(data)
 }
 
+function manualSort(value) {
+    switch (value){
+        case "name_a_z":
+            data.sort((a,b) => a["name"] > b["name"] ? 1 : -1)
+            break
+        case "name_z_a":
+            data.sort((a,b) => a["name"] > b["name"] ? -1 : 1)
+            break 
+        case "rating_high_low":
+            data.sort((a,b) => a["rating"] > b["rating"] ? -1 : 1)
+            break
+        case "rating_low_high":
+            data.sort((a,b) => a["rating"] > b["rating"] ? 1 : -1)
+            break
+    }
+
+
+    displayTable(data)
+}
+
 
 function searchData(searchTerm){
     if (searchTerm!==""){
@@ -263,6 +294,8 @@ function exitModal(){
     displayTable(data)
     document.getElementById("actionDivs").innerHTML = actionDivsHTML
     document.getElementById("tagsList").innerHTML = currentTagsList
+
+    document.getElementById("pageFooter").style.visibility = "visible"
 }
 
 function validateLogin(){
@@ -498,9 +531,9 @@ function displayEditModal(rowId){
             <div id="editBox">
                 <div class="modalExitButton" onclick="exitEdit(${rowId})">X</div>
                 <h1>Edit Row</h1>
-                <div class="editGrouping editRow">
-                    <label for="name">Name:</label><input id="nameInput" name="name" type="text" value="${row.name}">
-                    <label for="rating">Rating</label><input id="ratingInput" name="rating" type="text" value=${row.rating}>
+                <div class="editGrouping editRow" id="nameRatingGrouping">
+                    <div><label for="name">Name:</label><input id="nameInput" name="name" type="text" value="${row.name}"></div>
+                    <div><label for="rating">Rating</label><input id="ratingInput" name="rating" type="text" value=${row.rating}></div>
                 </div>
                 
                 <div class="editGrouping editCol">
@@ -509,11 +542,11 @@ function displayEditModal(rowId){
                 
                 <div class="editGrouping editCol">
                     <div class="editGrouping editRow editRowNoPadding">
-                    <label for="address">Address</label><input id="addressInput" name="address" type="textbox" value="${row.address}">
+                    <div><label for="address">Address</label><input id="addressInput" name="address" type="textbox" value="${row.address}"></div>   
                     </div>
-                    <div class="editGrouping editRowNoPadding">
-                        <label for="lat">Latitude:</label><input name="lat" id="latInput" type="text" value=${row.latitude}>
-                        <label for="long">Longitude:</label><input name="long" id="longInput" type="text" value=${row.longitude}>
+                    <div class="editGrouping editRowNoPadding" id="latLongGrouping">
+                        <div><label for="lat">Latitude:</label><input name="lat" id="latInput" type="text" value=${row.latitude}></div>
+                        <div><label for="long">Longitude:</label><input name="long" id="longInput" type="text" value=${row.longitude}></div>
                     </div>
                 </div>
 
@@ -573,6 +606,9 @@ function displayEditModal(rowId){
                                     <img class="editImg" id="img_${index}" src="${photo}">
                                 </div>`
     })
+
+    //hide footer
+    document.getElementById("pageFooter").style.visibility = "hidden"
 }
 
 function exitEdit(rowId){
@@ -658,10 +694,10 @@ function displayAddModal(){
         <div class="modalAlpha">
             <div id="editBox">
                 <div class="modalExitButton" onclick="exitAdd()">X</div>
-                <h1>Create Entry</h1>
-                <div class="editGrouping editRow">
-                    <label for="name">Name:</label><input id="nameInput" name="name" type="text">
-                    <label for="rating">Rating</label><input id="ratingInput" name="rating" type="text">
+                <h1>New Entry</h1>
+                <div class="editGrouping editRow" id="nameRatingGrouping">
+                    <div><label for="name">Name:</label><input id="nameInput" name="name" type="text"></div>
+                    <div><label for="rating">Rating</label><input id="ratingInput" name="rating" type="text"></div>
                 </div>
                 
                 <div class="editGrouping editCol">
@@ -670,11 +706,11 @@ function displayAddModal(){
                 
                 <div class="editGrouping editCol">
                     <div class="editGrouping editRow editRowNoPadding">
-                    <label for="address">Address</label><input id="addressInput" name="address" type="textbox">
+                        <div><label for="address">Address</label><input id="addressInput" name="address" type="textbox"></div>
                     </div>
-                    <div class="editGrouping editRowNoPadding">
-                        <label for="lat">Latitude:</label><input id="latInput" name="lat" type="text">
-                        <label for="long">Longitude:</label><input id="longInput" name="long" type="text">
+                    <div class="editGrouping editRowNoPadding" id="latLongGrouping">
+                        <div><label for="lat">Latitude:</label><input id="latInput" name="lat" type="text"></div>
+                        <div><label for="long">Longitude:</label><input id="longInput" name="long" type="text"></div>
                     </div>
                 </div>
 
@@ -716,6 +752,9 @@ function displayAddModal(){
 
     document.getElementById("mainContent").innerHTML = ""
     document.body.appendChild(modal)
+
+    //hide footer
+    document.getElementById("pageFooter").style.visibility = "hidden"
 }
 
 

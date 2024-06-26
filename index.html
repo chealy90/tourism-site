@@ -40,6 +40,16 @@
                         </ul>
                     </div>
                 </div>
+
+                <div id="manualSort">
+                    <label for="sortInput">Sort By:</label>
+                    <select name="sortInput" onchange="manualSort(this.value)">
+                        <option value="name_a_z">Name (A-Z)</option>
+                        <option value="name_z_a">Name (Z-A)</option>
+                        <option value="rating_high_low">Rating (High - Low)</option>
+                        <option value="rating_low_high">Rating (Low - High</option>
+                    </select>
+                </div>
                  
             </div>
 
@@ -49,7 +59,7 @@
         </div>
     </main>
 
-    <footer>
+    <footer id="pageFooter">
         <div id="footerAttributions">
             <p>Created By Christopher Healy 2024, DkIT</p>
             <p>Icons by <a href="https://icons8.com">icons8.com </a>and <a href="https://flaticon.com">flaticon.com</a></p>
