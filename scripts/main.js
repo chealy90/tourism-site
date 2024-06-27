@@ -27,7 +27,7 @@ const actionDivsHTML = `
     <div id="searchBox">
         <h3>Know what your looking for?</h3>
         <label for="textBox">Enter a search term:</label>
-        <input type="text" name="textBox" placeholder="e.g. Temple bar" oninput="searchData(this.value)">
+        <input type="text" name="textBox" id="searchBoxInput" placeholder="e.g. Temple bar" oninput="searchData(this.value)">
     </div>
 
     <div id="filterBox">
@@ -96,12 +96,17 @@ window.onload = () => {
 
         //initial display
         sort("id")
-        displayTable(data)
+        displayTable()
         
     })  
 }
 
-function displayTable(displayData){
+function displayTable(){
+    //search
+    displayData = searchData(document.getElementById("searchBoxInput").value, data)
+
+
+
     //filter data
     displayData = displayData.filter(row => {
         let result = false
@@ -123,6 +128,8 @@ function displayTable(displayData){
 
         return result
     })
+
+    
 
     
 
@@ -196,7 +203,7 @@ function sort(field){
     data.sort((a,b) => a[field] > b[field] ? 1*sortOrder : -1*sortOrder)
     currentSortField = field
 
-    displayTable(data)
+    displayTable()
 }
 
 function manualSort(value) {
@@ -216,16 +223,17 @@ function manualSort(value) {
     }
 
 
-    displayTable(data)
+    displayTable()
 }
 
 
-function searchData(searchTerm){
+function searchData(searchTerm, data){
     if (searchTerm!==""){
         let exp = new RegExp(searchTerm, "i")
         let searchedData = data.filter(row => exp.test(row.name))
-        displayTable(searchedData)
+        return searchedData
     }
+    return data
 }
 
 function updateFilters(){
@@ -236,7 +244,7 @@ function updateFilters(){
             selectedTags.push(cb.value)
         }
     })
-    displayTable(data)  
+    displayTable()  
 }
 
 function displayProfileModal(){
@@ -291,11 +299,11 @@ function displayProfileModal(){
 function exitModal(){
     let modalElement = document.getElementsByClassName("modalContainer")[0]
     modalElement.remove()
-    displayTable(data)
     document.getElementById("actionDivs").innerHTML = actionDivsHTML
     document.getElementById("tagsList").innerHTML = currentTagsList
-
     document.getElementById("pageFooter").style.visibility = "visible"
+
+    displayTable()
 }
 
 function validateLogin(){
