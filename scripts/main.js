@@ -27,7 +27,7 @@ const actionDivsHTML = `
     <div id="searchBox">
         <h3>Know what your looking for?</h3>
         <label for="textBox">Enter a search term:</label>
-        <input type="text" name="textBox" id="searchBoxInput" placeholder="e.g. Temple bar" oninput="searchData(this.value)">
+        <input type="text" name="textBox" id="searchBoxInput" placeholder="e.g. Temple bar" oninput="displayTable()">
     </div>
 
     <div id="filterBox">
