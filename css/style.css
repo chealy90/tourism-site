@@ -126,7 +126,7 @@ th {
 
 
 .tr_description {
-    min-width: 10%;
+    min-width: min-content;
 }
 
 .tableImg {
@@ -159,11 +159,11 @@ th {
 #actionDivs div {
     width: max-content;
     margin-inline: 8px;
+    background-color: #ddd;
 }
 
 #searchBox {
     padding: 40px 40px;
-    background-color: lightblue;
     border-radius: 5px;
     min-height: 200px;
     height: fit-content;
@@ -192,7 +192,6 @@ th {
 #filterBox {
     width: max-content;
     padding: 30px 30px;
-    background-color: lightblue;
     border-radius: 5px;
     min-height: 200px;
     height: fit-content;
@@ -221,7 +220,7 @@ th {
     height: 70px;
     border-radius: 50%;
     color: #141414;
-    background-color: #eee;
+    background-color: #ddd;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -250,6 +249,7 @@ th {
 }
 
 #manualSort {
+    display: none;
     visibility: hidden;
 }
 
@@ -839,9 +839,9 @@ footer div {
     }
 
     #actionDivs #manualSort {
+        display: inherit;
         visibility: visible;
         width: 60%;
-        background-color: lightblue;
         padding-block: 20px;
         display: flex;
         justify-content: center;
@@ -1051,6 +1051,10 @@ footer div {
     #tagsList {
         grid-template-columns: repeat(2, 150px);
         grid-template-rows: auto;
+    }
+
+    #actionDivs #manualSort {
+        width: 90%;
     }
 
     
