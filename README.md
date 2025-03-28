@@ -2,8 +2,6 @@
 This site is designed to create, read, update, display, and sort data on Dublin ladnmarks from an external JSON file.
 This is a simple personal project I decided to undertake during the summer to gain some basic familiarity with version control
 
-## Technologies 
-![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 
 # Features
 Features include the ability to independently search sort and filter the data.
